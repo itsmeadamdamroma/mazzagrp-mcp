@@ -1,0 +1,14 @@
+# Wallet keys
+wallet.json
+*.key
+
+# Python
+__pycache__/
+*.pyc
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Env
+.env

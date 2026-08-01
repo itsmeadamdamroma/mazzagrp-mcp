@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=64", "wheel"]
+build-backend = "setuptools.backends._legacy:_Backend"
+
+[project]
+name = "mazzagrp-mcp"
+version = "0.1.0"
+description = "MCP server wrapping 21 mazzagrp.com AI API endpoints with x402 USDC micropayments"
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [{name = "Adam Damroma"}]
+keywords = ["mcp", "x402", "usdc", "base", "ai", "micropayments", "agent"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Topic :: Internet :: WWW/HTTP",
+]
+dependencies = [
+    "mcp>=2.0",
+    "requests>=2.28",
+    "eth-account>=0.10",
+]
+
+[project.scripts]
+mazzagrp-mcp = "mazzagrp_mcp.server:main"
+
+[tool.setuptools.packages.find]
+include = ["mazzagrp_mcp*"]
