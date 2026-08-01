@@ -1,14 +1,21 @@
-# MazzaGroup MCP Server
+# mazzagrp-mcp
 
-21 mazzagrp.com AI API endpoints exposed as MCP tools. Pay-per-request via x402 USDC micropayments on Base. No API keys.
+[![MCP](https://img.shields.io/badge/MCP-Server-blue)](https://modelcontextprotocol.io)
+[![x402](https://img.shields.io/badge/x402-Payments-purple)](https://x402.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green)](https://opensource.org/licenses/MIT)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10+-blue)](https://www.python.org)
 
-## Quick start
+MCP server wrapping 21 [mazzagrp.com](https://mazzagrp.com) AI API endpoints with x402 USDC micropayments on Base. Agents pay per call with crypto — no API keys, no signup.
+
+## Install
 
 ```bash
 pip install mazzagrp-mcp
 ```
 
-### Claude Desktop / Cursor
+## Configure
+
+Add to your MCP client config (Claude Desktop, etc.):
 
 ```json
 {
@@ -16,57 +23,73 @@ pip install mazzagrp-mcp
     "mazzagrp": {
       "command": "mazzagrp-mcp",
       "env": {
-        "MAZZAGRP_WALLET_KEY": "<your-evm-private-key>"
+        "MAZZAGRP_WALLET_KEY": "0xYOUR_PRIVATE_KEY"
       }
     }
   }
 }
 ```
 
-### Environment variables
+Or use a wallet file:
 
-| Variable | Required | Default | Description |
-|----------|----------|---------|-------------|
-| `MAZZAGRP_WALLET_KEY` | yes | — | EVM private key (hex, 0x-prefixed) for signing x402 payments |
-| `MAZZAGRP_WALLET_PATH` | no | — | Path to wallet JSON file with `private_key` field (alternative to `MAZZAGRP_WALLET_KEY`) |
-| `MAZZAGRP_BASE_URL` | no | `https://api.mazzagrp.com` | API base URL |
+```json
+{
+  "mcpServers": {
+    "mazzagrp": {
+      "command": "mazzagrp-mcp",
+      "env": {
+        "MAZZAGRP_WALLET_PATH": "/path/to/wallet.json"
+      }
+    }
+  }
+}
+```
 
-Fund your wallet address with USDC on Base before calling paid endpoints.
+Wallet JSON format: `{"private_key": "0x...", "address": "0x..."}`
 
-## Tools (21)
+## 21 Tools
 
-| Tool | Cost | Description |
-|------|------|-------------|
-| `demo` | $0.01 | Test endpoint |
-| `scrape` | $0.05 | Scrape a URL |
-| `gigs_search` | $0.15 | GigRadar freelance gig search |
-| `lighthouse` | $0.12 | Lighthouse performance audit |
-| `a11y_audit` | $0.08 | Accessibility audit |
-| `crawl_judge` | $0.03 | Crawlability assessment |
-| `doc_extract` | $0.25 | Document content extraction (PDF/URL) |
-| `sentiment` | $0.10 | Sentiment analysis |
-| `summarize` | $0.10 | Text summarization |
-| `translate` | $0.12 | Text translation |
-| `classify` | $0.08 | Text classification |
-| `ner` | $0.10 | Named entity recognition |
-| `embeddings` | $0.05 | Vector embeddings |
-| `code_review` | $0.15 | AI code review |
-| `sql_generate` | $0.12 | Text-to-SQL generation |
-| `rag_query` | $0.20 | RAG with citations |
-| `web_agent` | $0.50 | Browser automation agent |
-| `sheets_automation` | $0.30 | Google Sheets automation |
-| `roleplay` | $0.10 | Character engine roleplay |
-| `negotiation` | $0.15 | Negotiation training |
-| `knowledge_recall` | $0.25 | Zero-hallucination knowledge recall |
+| Tool | Price | Description |
+|------|-------|-------------|
+| `recall` | $0.20 | Memory recall and context retrieval |
+| `rag` | $1.50 | Retrieval-augmented generation pipeline |
+| `sql` | $1.20 | AI-powered SQL query generation |
+| `negotiator` | $1.50 | AI negotiation assistant |
+| `design` | $0.80 | AI-assisted design recommendations |
+| `simulation` | $2.00 | AI scenario simulation and modeling |
+| `character` | $0.10 | AI character generation |
+| `puzzles` | $0.80 | AI puzzle generation and solving |
+| `arena` | $1.20 | AI model comparison and benchmarking |
+| `storyforge` | $0.60 | AI creative story generation |
+| `autoflow` | $1.50 | AI workflow orchestration |
+| `worldbuilder` | $2.00 | AI worldbuilding for games and RPGs |
+| `longqa` | $1.00 | Long-form question answering |
+| `temporal` | $0.80 | Temporal workflow orchestration |
+| `desktop` | $1.50 | Desktop application AI assistant |
+| `mcp_eval` | $2.00 | MCP evaluation and scoring |
+| `sheets` | $1.00 | AI spreadsheet automation |
+| `webagent` | $1.80 | AI web agent for browsing |
+| `consultation` | $5.00 | AI consultation with senior strategist |
+| `chatbot` | $1.00 | Conversational AI chatbot |
+| `automation` | $15.00 | AI workflow automation design |
 
 ## How it works
 
-1. Agent calls an MCP tool → server forwards request to `https://api.mazzagrp.com/v1/{endpoint}`
-2. API returns HTTP 402 with x402 payment requirements
-3. Server signs an EIP-3009 TransferWithAuthorization message with your wallet key
-4. Server retries with the `X-PAYMENT` header containing the signed payment
-5. API settles the USDC payment on Base and returns the result
-6. Server returns the result to the agent
+1. Agent calls an MCP tool (e.g., `recall`)
+2. MCP server POSTs to `mazzagrp.com/api/recall`
+3. Server returns HTTP 402 with x402 payment requirements
+4. MCP server signs EIP-712 payment with your wallet
+5. Retries with `PAYMENT-SIGNATURE` header
+6. Returns AI response to the agent
+
+## Payment
+
+- **Protocol:** x402 v2
+- **Network:** Base Sepolia (testnet)
+- **Asset:** USDC
+- **Facilitator:** x402.org/facilitator
+
+Fund your wallet with USDC on Base Sepolia and the MCP server handles the rest.
 
 ## License
 
