@@ -1,0 +1,26 @@
+# Smithery configuration for mazzagrp-mcp
+# https://smithery.ai/docs/deploy/server-config
+
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      privateKey:
+        type: string
+        title: Wallet Private Key
+        description: EVM private key (0x-prefixed) used to sign x402 USDC payments on Base. Fund with USDC on Base mainnet.
+      baseUrl:
+        type: string
+        title: API Base URL
+        default: https://mazzagrp.com
+        description: Mazza Group API base URL.
+  commandFunction: |-
+    (config) => ({
+      command: "mazzagrp-mcp",
+      args: [],
+      env: {
+        MAZZAGRP_WALLET_KEY: config.privateKey || "",
+        MAZZAGRP_BASE_URL: config.baseUrl || "https://mazzagrp.com"
+      }
+    })

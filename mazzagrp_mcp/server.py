@@ -10,8 +10,7 @@ import typing as t
 
 from mcp.server import MCPServer
 
-sys.path.insert(0, "/root/mazzagrp-python")
-from mazzagrp.client import MazzaClient  # noqa: E402
+from mazzagrp_mcp._client import MazzaClient  # noqa: E402
 
 DEFAULT_WALLET_PATH = "/root/.openclaw/workspace/x402-cashclaw/wallet.json"
 
